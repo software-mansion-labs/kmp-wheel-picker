@@ -1,4 +1,4 @@
-package com.patrykandpatrick.kovo
+package com.patrykandpatrick.kovo.sample
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicText
@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.patrykandpatrick.kovo.WheelPickerScope
 import kotlin.math.abs
 
 @Composable
