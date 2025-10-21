@@ -36,7 +36,7 @@ class WheelPickerState internal constructor(initialIndex: Int = 0) {
 
     internal var isDragInProgress = false
 
-    internal lateinit var scrollAnimationSpec: AnimationSpec<Float>
+    internal lateinit var animationSpec: AnimationSpec<Float>
 
     internal var friction by Delegates.notNull<Float>()
 
@@ -109,7 +109,7 @@ class WheelPickerState internal constructor(initialIndex: Int = 0) {
             initialValue = value,
             targetValue = targetValue,
             initialVelocity = -velocity / maxItemHeight,
-            animationSpec = scrollAnimationSpec,
+            animationSpec = animationSpec,
         ) { value, _ ->
             this.value = value
         }
@@ -140,7 +140,7 @@ class WheelPickerState internal constructor(initialIndex: Int = 0) {
         animate(
             initialValue = value,
             targetValue = index.toFloat(),
-            animationSpec = scrollAnimationSpec,
+            animationSpec = animationSpec,
         ) { value, _ ->
             this.value = value
         }
