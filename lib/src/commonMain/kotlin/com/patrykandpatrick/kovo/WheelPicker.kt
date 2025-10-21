@@ -10,7 +10,6 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,7 +36,7 @@ public fun WheelPicker(
 
     Layout(
         contents = listOf(window) + { repeat(state.itemCount) { item(it) } },
-        measurePolicy = remember(state, bufferSize) { WheelPickerMeasurePolicy(state, bufferSize) },
+        measurePolicy = rememberWheelPickerMeasurePolicy(state, bufferSize),
         modifier =
             modifier
                 .clip(RectangleShape)
