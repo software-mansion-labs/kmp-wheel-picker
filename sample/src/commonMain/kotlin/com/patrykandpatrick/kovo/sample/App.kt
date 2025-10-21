@@ -33,7 +33,7 @@ fun App() {
                 WheelPicker(
                     state = state,
                     bufferSize = BUFFER_SIZE,
-                    highlight = {
+                    window = {
                         Box(
                             Modifier.border(
                                 1.dp,

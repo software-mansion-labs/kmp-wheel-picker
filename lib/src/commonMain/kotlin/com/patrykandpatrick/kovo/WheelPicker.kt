@@ -28,7 +28,7 @@ fun WheelPicker(
     animationSpec: AnimationSpec<Float> =
         spring(Spring.DampingRatioLowBouncy, Spring.StiffnessMediumLow),
     friction: Float = 8f,
-    highlight: @Composable () -> Unit = {},
+    window: @Composable () -> Unit = {},
     item: @Composable (Int) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -36,7 +36,7 @@ fun WheelPicker(
     state.friction = friction
 
     Layout(
-        contents = listOf(highlight) + { repeat(state.itemCount) { item(it) } },
+        contents = listOf(window) + { repeat(state.itemCount) { item(it) } },
         measurePolicy = remember(state, bufferSize) { WheelPickerMeasurePolicy(state, bufferSize) },
         modifier =
             modifier
