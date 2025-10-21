@@ -27,11 +27,13 @@ fun WheelPicker(
     itemExtent: Int = 3,
     scrollAnimationSpec: AnimationSpec<Float> =
         spring(Spring.DampingRatioLowBouncy, Spring.StiffnessMediumLow),
+    friction: Float = 8f,
     highlight: @Composable () -> Unit = {},
     item: @Composable (Int) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     state.scrollAnimationSpec = scrollAnimationSpec
+    state.friction = friction
 
     Layout(
         contents = listOf(highlight) + { repeat(state.itemCount) { item(it) } },

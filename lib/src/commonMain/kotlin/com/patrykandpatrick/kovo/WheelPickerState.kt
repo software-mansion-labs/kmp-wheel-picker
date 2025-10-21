@@ -21,6 +21,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 class WheelPickerState internal constructor(initialIndex: Int = 0) {
     var index: Int by mutableIntStateOf(initialIndex)
@@ -36,6 +37,8 @@ class WheelPickerState internal constructor(initialIndex: Int = 0) {
     internal var isDragInProgress = false
 
     internal lateinit var scrollAnimationSpec: AnimationSpec<Float>
+
+    internal var friction by Delegates.notNull<Float>()
 
     internal var itemCount by mutableIntStateOf(0)
 
@@ -97,7 +100,7 @@ class WheelPickerState internal constructor(initialIndex: Int = 0) {
     private suspend fun performSnap(velocity: Float) {
         val targetValue =
             round(
-                FloatExponentialDecaySpec()
+                FloatExponentialDecaySpec(friction)
                     .getTargetValue(value, -velocity / maxItemHeight)
                     .coercedInValueRange
             )
