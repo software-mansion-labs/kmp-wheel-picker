@@ -21,7 +21,7 @@ import androidx.compose.ui.layout.Layout
 import kotlinx.coroutines.launch
 
 @Composable
-fun WheelPicker(
+public fun WheelPicker(
     state: WheelPickerState,
     modifier: Modifier = Modifier,
     bufferSize: Int = 3,

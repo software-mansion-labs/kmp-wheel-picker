@@ -26,9 +26,7 @@ kotlin {
     sourceSets {
         val desktopMain by getting
 
-        androidMain.dependencies {
-            implementation(compose.preview)
-        }
+        androidMain.dependencies { implementation(compose.preview) }
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -40,6 +38,8 @@ kotlin {
             implementation(libs.kotlinx.coroutines.swing)
         }
     }
+
+    explicitApi()
 }
 
 android {
