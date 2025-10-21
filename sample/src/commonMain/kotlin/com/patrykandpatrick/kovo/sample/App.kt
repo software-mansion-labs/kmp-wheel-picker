@@ -3,7 +3,7 @@ package com.patrykandpatrick.kovo.sample
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -29,7 +29,7 @@ fun App() {
     val state = rememberWheelPickerState(itemCount = 10)
     MaterialTheme(if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
         Scaffold { padding ->
-            Box(Modifier.fillMaxWidth().padding(padding), Alignment.TopCenter) {
+            Box(Modifier.fillMaxSize().padding(padding), Alignment.Center) {
                 WheelPicker(
                     state = state,
                     bufferSize = BUFFER_SIZE,
