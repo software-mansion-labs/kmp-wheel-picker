@@ -21,18 +21,16 @@ internal class WheelPickerMeasurePolicy(
         var maxItemHeight = itemPlaceables.maxOf { it.height }
         var visibleItemCount = (2 * bufferSize + 1).coerceAtMost(itemPlaceables.size)
         if (visibleItemCount % 2 == 0) visibleItemCount++
-        val highlightConstraints = constraints.copy(minWidth = width, minHeight = maxItemHeight)
-        val highlightPlaceables = measurables[0].map { it.measure(highlightConstraints) }
-        width = max(width, highlightPlaceables.maxOfOrNull { it.width } ?: 0)
-        maxItemHeight = max(maxItemHeight, highlightPlaceables.maxOfOrNull { it.height } ?: 0)
+        val windowConstraints = constraints.copy(minWidth = width, minHeight = maxItemHeight)
+        val windowPlaceables = measurables[0].map { it.measure(windowConstraints) }
+        width = max(width, windowPlaceables.maxOfOrNull { it.width } ?: 0)
+        maxItemHeight = max(maxItemHeight, windowPlaceables.maxOfOrNull { it.height } ?: 0)
         val height = visibleItemCount * maxItemHeight
         val centerLine = height / 2
         state.maxItemHeight = maxItemHeight
 
         return layout(width, height) {
-            highlightPlaceables.forEach { placeable ->
-                placeable.place(0, (height - placeable.height) / 2)
-            }
+            windowPlaceables.forEach { it.place(0, (height - it.height) / 2) }
             val firstItemIndex = (state.value - bufferSize).toInt().coerceAtLeast(0)
             val lastItemIndex =
                 ceil(state.value + bufferSize).toInt().coerceAtMost(state.itemCount - 1)
