@@ -21,7 +21,7 @@ import com.patrykandpatrick.kovo.rememberWheelPickerState
 import kotlin.math.abs
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-private const val ITEM_EXTENT = 3
+private const val BUFFER_SIZE = 3
 
 @Composable
 @Preview
@@ -32,7 +32,7 @@ fun App() {
             Box(Modifier.fillMaxWidth().padding(padding), Alignment.TopCenter) {
                 WheelPicker(
                     state = state,
-                    itemExtent = ITEM_EXTENT,
+                    bufferSize = BUFFER_SIZE,
                     highlight = {
                         Box(
                             Modifier.border(
@@ -47,7 +47,7 @@ fun App() {
                         text = "Item $index",
                         modifier =
                             Modifier.padding(16.dp, 8.dp).graphicsLayer {
-                                alpha = (ITEM_EXTENT - abs(state.value - index)).coerceIn(0f, 1f)
+                                alpha = (BUFFER_SIZE - abs(state.value - index)).coerceIn(0f, 1f)
                             },
                         color =
                             lerp(
