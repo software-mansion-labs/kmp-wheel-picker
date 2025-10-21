@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 fun WheelPicker(
     state: WheelPickerState,
     modifier: Modifier = Modifier,
-    itemExtent: Int = 3,
+    bufferSize: Int = 3,
     scrollAnimationSpec: AnimationSpec<Float> =
         spring(Spring.DampingRatioLowBouncy, Spring.StiffnessMediumLow),
     friction: Float = 8f,
@@ -37,7 +37,7 @@ fun WheelPicker(
 
     Layout(
         contents = listOf(highlight) + { repeat(state.itemCount) { item(it) } },
-        measurePolicy = remember(state, itemExtent) { WheelPickerMeasurePolicy(state, itemExtent) },
+        measurePolicy = remember(state, bufferSize) { WheelPickerMeasurePolicy(state, bufferSize) },
         modifier =
             modifier
                 .clip(RectangleShape)

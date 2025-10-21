@@ -10,7 +10,7 @@ import kotlin.math.max
 
 internal class WheelPickerMeasurePolicy(
     private val state: WheelPickerState,
-    private val itemExtent: Int,
+    private val bufferSize: Int,
 ) : MultiContentMeasurePolicy {
     override fun MeasureScope.measure(
         measurables: List<List<Measurable>>,
@@ -19,7 +19,7 @@ internal class WheelPickerMeasurePolicy(
         val itemPlaceables = measurables[1].map { it.measure(constraints) }
         var width = itemPlaceables.maxOf { it.width }
         var maxItemHeight = itemPlaceables.maxOf { it.height }
-        var visibleItemCount = (itemExtent * 2 + 1).coerceAtMost(itemPlaceables.size)
+        var visibleItemCount = (2 * bufferSize + 1).coerceAtMost(itemPlaceables.size)
         if (visibleItemCount % 2 == 0) visibleItemCount++
         val highlightConstraints = constraints.copy(minWidth = width, minHeight = maxItemHeight)
         val highlightPlaceables = measurables[0].map { it.measure(highlightConstraints) }
@@ -33,9 +33,9 @@ internal class WheelPickerMeasurePolicy(
             highlightPlaceables.forEach { placeable ->
                 placeable.place(0, (height - placeable.height) / 2)
             }
-            val firstItemIndex = (state.value - itemExtent).toInt().coerceAtLeast(0)
+            val firstItemIndex = (state.value - bufferSize).toInt().coerceAtLeast(0)
             val lastItemIndex =
-                ceil(state.value + itemExtent).toInt().coerceAtMost(state.itemCount - 1)
+                ceil(state.value + bufferSize).toInt().coerceAtMost(state.itemCount - 1)
             for (index in firstItemIndex..lastItemIndex) {
                 val placeable = itemPlaceables[index]
                 val itemY = centerLine + (index - state.value) * maxItemHeight
