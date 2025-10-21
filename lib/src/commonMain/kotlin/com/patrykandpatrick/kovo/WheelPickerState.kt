@@ -16,18 +16,18 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import kotlin.math.round
 import kotlin.math.roundToInt
+import kotlin.properties.Delegates
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlin.properties.Delegates
 
-class WheelPickerState internal constructor(initialIndex: Int = 0) {
-    var index: Int by mutableIntStateOf(initialIndex)
+public class WheelPickerState internal constructor(initialIndex: Int = 0) {
+    public var index: Int by mutableIntStateOf(initialIndex)
         private set
 
-    var value: Float by mutableFloatStateOf(initialIndex.toFloat())
+    public var value: Float by mutableFloatStateOf(initialIndex.toFloat())
         private set
 
     private var scrollJob: Job? = null
@@ -42,14 +42,14 @@ class WheelPickerState internal constructor(initialIndex: Int = 0) {
 
     internal var itemCount by mutableIntStateOf(0)
 
-    var maxItemHeight: Int by mutableIntStateOf(0)
+    public var maxItemHeight: Int by mutableIntStateOf(0)
         internal set
 
     internal val draggableState = DraggableState(::onScrollDelta)
 
     internal val internalInteractionSource = MutableInteractionSource()
 
-    val interactionSource: InteractionSource
+    public val interactionSource: InteractionSource
         get() = internalInteractionSource
 
     private fun onScrollDelta(delta: Float) {
@@ -115,11 +115,17 @@ class WheelPickerState internal constructor(initialIndex: Int = 0) {
         }
     }
 
-    suspend fun scrollTo(value: Float, scrollPriority: MutatePriority = MutatePriority.Default) {
+    public suspend fun scrollTo(
+        value: Float,
+        scrollPriority: MutatePriority = MutatePriority.Default,
+    ) {
         startScroll(scrollPriority) { performScrollTo(value.coercedInValueRange) }
     }
 
-    suspend fun scrollTo(index: Int, scrollPriority: MutatePriority = MutatePriority.Default) {
+    public suspend fun scrollTo(
+        index: Int,
+        scrollPriority: MutatePriority = MutatePriority.Default,
+    ) {
         scrollTo(index.toFloat(), scrollPriority)
     }
 
@@ -128,7 +134,7 @@ class WheelPickerState internal constructor(initialIndex: Int = 0) {
         this.value = value
     }
 
-    suspend fun animateScrollTo(
+    public suspend fun animateScrollTo(
         index: Int,
         scrollPriority: MutatePriority = MutatePriority.Default,
     ) {
@@ -150,6 +156,6 @@ class WheelPickerState internal constructor(initialIndex: Int = 0) {
 private val WheelPickerStateSaver = Saver({ it.index }, ::WheelPickerState)
 
 @Composable
-fun rememberWheelPickerState(itemCount: Int, initialIndex: Int = 0): WheelPickerState =
+public fun rememberWheelPickerState(itemCount: Int, initialIndex: Int = 0): WheelPickerState =
     rememberSaveable(saver = WheelPickerStateSaver) { WheelPickerState(initialIndex) }
         .also { it.itemCount = itemCount }
