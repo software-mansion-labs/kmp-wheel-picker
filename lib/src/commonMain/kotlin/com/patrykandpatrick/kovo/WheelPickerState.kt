@@ -14,19 +14,20 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import kotlin.math.round
+import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 
-class WheelPickerState(initialSelectedIndex: Int = 0) {
-    var currentItem by mutableIntStateOf(initialSelectedIndex)
-        internal set
+class WheelPickerState internal constructor(initialIndex: Int = 0) {
+    var index: Int by mutableIntStateOf(initialIndex)
+        private set
 
-    var currentItemOffset by mutableFloatStateOf(0f)
-        internal set
+    var value: Float by mutableFloatStateOf(initialIndex.toFloat())
+        private set
 
     private var scrollJob: Job? = null
 
@@ -34,16 +35,12 @@ class WheelPickerState(initialSelectedIndex: Int = 0) {
 
     internal var isDragInProgress = false
 
-    internal var scrollAnimationSpec: AnimationSpec<Float> = androidx.compose.animation.core.snap()
+    internal lateinit var scrollAnimationSpec: AnimationSpec<Float>
 
-    internal var itemCount: Int = 0
+    internal var itemCount by mutableIntStateOf(0)
 
     var maxItemHeight: Int by mutableIntStateOf(0)
         internal set
-
-    internal var minScroll = 0f
-
-    internal var maxScroll = 0f
 
     internal val draggableState = DraggableState(::onScrollDelta)
 
@@ -52,42 +49,18 @@ class WheelPickerState(initialSelectedIndex: Int = 0) {
     val interactionSource: InteractionSource
         get() = internalInteractionSource
 
-    val scroll = mutableFloatStateOf(0f)
-
-    var currentScroll: Float = 0f
-        private set
-
-    var initialScrollCalculated = false
-        private set
-
-    fun setScroll(value: Float, minScroll: Float, maxScroll: Float) {
-        scrollJob?.cancel()
-        scrollJob = null
-        this.minScroll = minScroll
-        this.maxScroll = maxScroll
-        if (currentScroll == 0f) setScroll(value)
-        initialScrollCalculated = true
-    }
-
-    private fun setScroll(value: Float): Float {
-        val currentScroll = currentScroll
-        val delta = value - currentScroll
-        onScrollDeltaInternal(delta)
-        return delta
-    }
-
-    fun onScrollDelta(delta: Float) {
+    private fun onScrollDelta(delta: Float) {
         currentScrollPriority = null
         scrollJob?.cancel()
         scrollJob = null
-        onScrollDeltaInternal(delta)
+        value -= delta / maxItemHeight
     }
 
-    private fun onScrollDeltaInternal(delta: Float) {
-        val newScroll = (currentScroll + delta)
-        scroll.floatValue = newScroll
-        currentScroll = newScroll
-    }
+    private val Int.coercedInIndexRange
+        get() = coerceIn(0, itemCount - 1)
+
+    private val Float.coercedInValueRange
+        get() = coerceIn(0f, itemCount - 1f)
 
     private suspend fun stopScrollJob(scrollPriority: MutatePriority): Boolean {
         when {
@@ -123,63 +96,57 @@ class WheelPickerState(initialSelectedIndex: Int = 0) {
 
     private suspend fun performSnap(velocity: Float) {
         val targetValue =
-            FloatExponentialDecaySpec()
-                .getTargetValue(currentScroll, velocity)
-                .coerceIn(minScroll, maxScroll)
-        val remainder = targetValue % maxItemHeight
-        val snapScrollValue =
-            targetValue - remainder - if (abs(remainder) > maxItemHeight / 2) maxItemHeight else 0
+            round(
+                FloatExponentialDecaySpec()
+                    .getTargetValue(value, -velocity / maxItemHeight)
+                    .coercedInValueRange
+            )
+        index = targetValue.toInt()
         animate(
-            initialValue = currentScroll,
-            targetValue = snapScrollValue,
-            initialVelocity = velocity,
+            initialValue = value,
+            targetValue = targetValue,
+            initialVelocity = -velocity / maxItemHeight,
             animationSpec = scrollAnimationSpec,
         ) { value, _ ->
-            setScroll(value)
+            this.value = value
         }
     }
 
-    private fun getTargetScrollValue(index: Int, positionOffset: Float): Float =
-        maxScroll - maxItemHeight * (index + positionOffset).coerceIn(0f, itemCount - 1f)
-
-    suspend fun scrollTo(
-        index: Int,
-        positionOffset: Float = 0f,
-        scrollPriority: MutatePriority = MutatePriority.Default,
-    ) {
-        startScroll(scrollPriority) { performScrollTo(index, positionOffset) }
+    suspend fun scrollTo(value: Float, scrollPriority: MutatePriority = MutatePriority.Default) {
+        startScroll(scrollPriority) { performScrollTo(value.coercedInValueRange) }
     }
 
-    private fun performScrollTo(index: Int, positionOffset: Float) {
-        setScroll(getTargetScrollValue(index, positionOffset))
+    suspend fun scrollTo(index: Int, scrollPriority: MutatePriority = MutatePriority.Default) {
+        scrollTo(index.toFloat(), scrollPriority)
+    }
+
+    private fun performScrollTo(value: Float) {
+        this.index = value.roundToInt()
+        this.value = value
     }
 
     suspend fun animateScrollTo(
         index: Int,
         scrollPriority: MutatePriority = MutatePriority.Default,
     ) {
-        startScroll(scrollPriority) { performAnimateScrollTo(index) }
+        startScroll(scrollPriority) { performAnimateScrollTo(index.coercedInIndexRange) }
     }
 
     private suspend fun performAnimateScrollTo(index: Int) {
+        this.index = index
         animate(
-            initialValue = currentScroll,
-            targetValue = getTargetScrollValue(index, 0f),
+            initialValue = value,
+            targetValue = index.toFloat(),
             animationSpec = scrollAnimationSpec,
         ) { value, _ ->
-            setScroll(value)
+            this.value = value
         }
     }
 }
 
+private val WheelPickerStateSaver = Saver({ it.index }, ::WheelPickerState)
+
 @Composable
-fun rememberWheelPickerState(initialSelectedIndex: Int = 0): WheelPickerState =
-    rememberSaveable(
-        saver =
-            Saver<WheelPickerState, Int>(
-                save = { it.currentItem },
-                restore = { WheelPickerState(it) },
-            )
-    ) {
-        WheelPickerState(initialSelectedIndex)
-    }
+fun rememberWheelPickerState(itemCount: Int, initialIndex: Int = 0): WheelPickerState =
+    rememberSaveable(saver = WheelPickerStateSaver) { WheelPickerState(initialIndex) }
+        .also { it.itemCount = itemCount }

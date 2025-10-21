@@ -12,7 +12,6 @@ import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
@@ -23,30 +22,20 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun WheelPicker(
+    state: WheelPickerState,
     modifier: Modifier = Modifier,
-    state: WheelPickerState = rememberWheelPickerState(),
     itemExtent: Int = 3,
-    onItemSelected: (Int) -> Unit = {},
     scrollAnimationSpec: AnimationSpec<Float> =
         spring(Spring.DampingRatioLowBouncy, Spring.StiffnessMediumLow),
     highlight: @Composable () -> Unit = {},
-    items: @Composable WheelPickerScope.() -> Unit,
+    item: @Composable (Int) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val scope = remember { WheelPickerScopeImpl() }
-    val onItemSelectedState = rememberUpdatedState(onItemSelected)
     state.scrollAnimationSpec = scrollAnimationSpec
 
     Layout(
-        contents = listOf(highlight) + { items(scope) },
-        measurePolicy =
-            remember(state, itemExtent) {
-                WheelPickerMeasurePolicy(
-                    state = state,
-                    itemExtent = itemExtent,
-                    onItemSelected = onItemSelectedState,
-                )
-            },
+        contents = listOf(highlight) + { repeat(state.itemCount) { item(it) } },
+        measurePolicy = remember(state, itemExtent) { WheelPickerMeasurePolicy(state, itemExtent) },
         modifier =
             modifier
                 .clip(RectangleShape)
@@ -58,12 +47,11 @@ fun WheelPicker(
                 )
                 .pointerInput(state) {
                     detectTapGestures { offset ->
-                        val firstVisibleIndex =
-                            state.currentItem - (size.height / state.maxItemHeight) / 2
-                        val clickedItemIndex = offset.y.toInt() / state.maxItemHeight
+                        val topValue = state.value - (size.height / state.maxItemHeight) / 2
+                        val offsetDelta = offset.y / state.maxItemHeight
                         coroutineScope.launch {
                             state.animateScrollTo(
-                                firstVisibleIndex + clickedItemIndex,
+                                (topValue + offsetDelta).toInt(),
                                 MutatePriority.UserInput,
                             )
                         }
