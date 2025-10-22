@@ -1,4 +1,4 @@
-package com.patrykandpatrick.kovo.sample
+package com.swmansion.kmpwheelpicker.sample
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

@@ -16,7 +16,7 @@ kotlin {
 
     listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "Kovo"
+            baseName = "KMPWheelPicker"
             isStatic = true
         }
     }
@@ -43,7 +43,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.patrykandpatrick.lib"
+    namespace = "com.swmansion.kmpwheelpicker"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

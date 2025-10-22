@@ -1,4 +1,4 @@
-package com.patrykandpatrick.kovo
+package com.swmansion.kmpwheelpicker
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.Spring

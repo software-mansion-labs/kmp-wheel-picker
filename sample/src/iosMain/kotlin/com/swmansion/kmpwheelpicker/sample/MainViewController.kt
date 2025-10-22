@@ -1,4 +1,4 @@
-package com.patrykandpatrick.kovo.sample
+package com.swmansion.kmpwheelpicker.sample
 
 import androidx.compose.ui.window.ComposeUIViewController
 
