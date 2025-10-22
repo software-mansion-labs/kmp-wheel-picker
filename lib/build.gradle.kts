@@ -1,12 +1,17 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+group = "com.swmansion.kmpwheelpicker"
+
+version = "0.1.0"
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetBrains.compose)
     alias(libs.plugins.jetBrains.dokka)
     alias(libs.plugins.jetBrains.kotlin.multiplatform)
     alias(libs.plugins.jetBrains.kotlin.plugin.compose)
+    alias(libs.plugins.vanniktech.maven.publish)
 }
 
 kotlin {
@@ -64,4 +69,38 @@ dependencies { debugImplementation(compose.uiTooling) }
 dokka {
     moduleName = "kmp-wheel-picker"
     pluginsConfiguration.html.footerMessage = "© 2025 Software Mansion and Patryk Goworowski"
+}
+
+mavenPublishing {
+    coordinates(artifactId = "kmp-wheel-picker")
+    publishToMavenCentral()
+    signAllPublications()
+    pom {
+        name = "KMP Wheel Picker"
+        description = "Provides a modular wheel picker for Compose Multiplatform."
+        url = "https://github.com/software-mansion/kmp-wheel-picker"
+        licenses {
+            license {
+                name = "The MIT License"
+                url = "http://www.opensource.org/licenses/mit-license.php"
+            }
+        }
+        scm {
+            connection = "scm:git:git://github.com/software-mansion/kmp-wheel-picker.git"
+            developerConnection = "scm:git:ssh://github.com/software-mansion/kmp-wheel-picker.git"
+            url = "https://github.com/software-mansion/kmp-wheel-picker"
+        }
+        developers {
+            developer {
+                id = "patrykgoworowski"
+                name = "Patryk Goworowski"
+                email = "contact@patrykgoworowski.com"
+            }
+            developer {
+                id = "patrickmichalik"
+                name = "Patrick Michalik"
+                email = "patrick.michalik@swmansion.com"
+            }
+        }
+    }
 }
