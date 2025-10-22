@@ -19,6 +19,18 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.Layout
 import kotlinx.coroutines.launch
 
+/**
+ * Displays a wheel picker.
+ *
+ * @param state manages the wheel picker’s state.
+ * @param modifier the modifiers to apply.
+ * @param bufferSize the number of items shown above and below the window.
+ * @param animationSpec the animation specification for animated scroll and snapping.
+ * @param friction the scroll friction, used for snapping.
+ * @param window draws the window, which highlights the selected item.
+ * @param item draws the item at the given index. To style the item based on its position, compare
+ *   the passed-in index to [WheelPickerState.value].
+ */
 @Composable
 public fun WheelPicker(
     state: WheelPickerState,
