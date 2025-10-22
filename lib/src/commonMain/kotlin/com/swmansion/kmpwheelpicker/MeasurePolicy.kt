@@ -1,4 +1,4 @@
-package com.patrykandpatrick.kovo
+package com.swmansion.kmpwheelpicker
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

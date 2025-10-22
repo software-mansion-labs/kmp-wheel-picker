@@ -1,4 +1,4 @@
-package com.patrykandpatrick.kovo.sample
+package com.swmansion.kmpwheelpicker.sample
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.unit.dp
-import com.patrykandpatrick.kovo.WheelPicker
-import com.patrykandpatrick.kovo.rememberWheelPickerState
+import com.swmansion.kmpwheelpicker.WheelPicker
+import com.swmansion.kmpwheelpicker.rememberWheelPickerState
 import kotlin.math.abs
 import org.jetbrains.compose.ui.tooling.preview.Preview
 

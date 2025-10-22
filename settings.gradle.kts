@@ -1,4 +1,4 @@
-rootProject.name = "Kovo"
+rootProject.name = "kmp-wheel-picker"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 

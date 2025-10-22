@@ -50,11 +50,11 @@ kotlin {
 }
 
 android {
-    namespace = "com.patrykandpatrick.kovo.sample"
+    namespace = "com.swmansion.kmpwheelpicker.sample"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.patrykandpatrick.kovo.sample"
+        applicationId = "com.swmansion.kmpwheelpicker.sample"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
@@ -72,11 +72,11 @@ dependencies { debugImplementation(compose.uiTooling) }
 
 compose.desktop {
     application {
-        mainClass = "com.patrykandpatrick.kovo.sample.MainKt"
+        mainClass = "com.swmansion.kmpwheelpicker.sample.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.patrykandpatrick.kovo"
+            packageName = "com.swmansion.kmpwheelpicker.sample"
             packageVersion = "1.0.0"
         }
     }
