@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetBrains.compose)
+    alias(libs.plugins.jetBrains.dokka)
     alias(libs.plugins.jetBrains.kotlin.multiplatform)
     alias(libs.plugins.jetBrains.kotlin.plugin.compose)
 }
@@ -59,3 +60,9 @@ android {
 }
 
 dependencies { debugImplementation(compose.uiTooling) }
+
+dokka {
+    moduleName = "kmp-wheel-picker"
+    pluginsConfiguration.html.footerMessage =
+        "Copyright 2025 by Software Mansion and Patryk Goworowski"
+}
