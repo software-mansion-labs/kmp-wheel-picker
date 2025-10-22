@@ -25,7 +25,7 @@ private const val BUFFER_SIZE = 3
 
 @Composable
 @Preview
-fun App() {
+fun SampleApp() {
     val state = rememberWheelPickerState(itemCount = 10)
     MaterialTheme(if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
         Scaffold { padding ->
