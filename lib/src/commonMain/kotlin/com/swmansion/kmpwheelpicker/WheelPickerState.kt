@@ -155,6 +155,12 @@ public class WheelPickerState internal constructor(initialIndex: Int = 0) {
 
 private val WheelPickerStateSaver = Saver({ it.index }, ::WheelPickerState)
 
+/**
+ * Creates and remembers a [WheelPickerState] instance.
+ *
+ * @param itemCount the item count.
+ * @param initialIndex the index of the initially selected item.
+ */
 @Composable
 public fun rememberWheelPickerState(itemCount: Int, initialIndex: Int = 0): WheelPickerState =
     rememberSaveable(saver = WheelPickerStateSaver) { WheelPickerState(initialIndex) }
