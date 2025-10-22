@@ -23,6 +23,7 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
+/** Manages a wheel picker’s state. */
 public class WheelPickerState internal constructor(initialIndex: Int = 0) {
     public var index: Int by mutableIntStateOf(initialIndex)
         private set
