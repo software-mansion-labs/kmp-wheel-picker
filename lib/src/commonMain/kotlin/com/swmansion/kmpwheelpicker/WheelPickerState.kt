@@ -25,6 +25,7 @@ import kotlinx.coroutines.launch
 
 /** Manages a wheel picker’s state. */
 public class WheelPickerState internal constructor(initialIndex: Int = 0) {
+    /** The index of the currently selected item. */
     public var index: Int by mutableIntStateOf(initialIndex)
         private set
 
