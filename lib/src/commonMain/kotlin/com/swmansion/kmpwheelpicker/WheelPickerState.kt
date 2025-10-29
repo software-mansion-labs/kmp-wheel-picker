@@ -5,6 +5,7 @@ import androidx.compose.animation.core.FloatExponentialDecaySpec
 import androidx.compose.animation.core.animate
 import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.gestures.DraggableState
+import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.Composable
@@ -52,6 +53,7 @@ public class WheelPickerState internal constructor(initialIndex: Int = 0) {
 
     internal val internalInteractionSource = MutableInteractionSource()
 
+    /** Represents the [Interaction] stream. */
     public val interactionSource: InteractionSource
         get() = internalInteractionSource
 
