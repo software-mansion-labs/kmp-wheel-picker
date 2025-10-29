@@ -46,6 +46,7 @@ public class WheelPickerState internal constructor(initialIndex: Int = 0) {
 
     internal var itemCount by mutableIntStateOf(0)
 
+    /** The tallest item’s height. */
     public var maxItemHeight: Int by mutableIntStateOf(0)
         internal set
 
