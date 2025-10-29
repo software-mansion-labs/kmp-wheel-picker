@@ -29,6 +29,7 @@ public class WheelPickerState internal constructor(initialIndex: Int = 0) {
     public var index: Int by mutableIntStateOf(initialIndex)
         private set
 
+    /** The scroll value, based on the range of item indexes. */
     public var value: Float by mutableFloatStateOf(initialIndex.toFloat())
         private set
 
