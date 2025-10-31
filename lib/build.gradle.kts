@@ -78,7 +78,7 @@ mavenPublishing {
     pom {
         name = "KMP Wheel Picker"
         description = "Provides a modular wheel picker for Compose Multiplatform."
-        url = "https://github.com/software-mansion/kmp-wheel-picker"
+        url = "https://github.com/software-mansion-labs/kmp-wheel-picker"
         licenses {
             license {
                 name = "The MIT License"
@@ -86,9 +86,10 @@ mavenPublishing {
             }
         }
         scm {
-            connection = "scm:git:git://github.com/software-mansion/kmp-wheel-picker.git"
-            developerConnection = "scm:git:ssh://github.com/software-mansion/kmp-wheel-picker.git"
-            url = "https://github.com/software-mansion/kmp-wheel-picker"
+            connection = "scm:git:git://github.com/software-mansion-labs/kmp-wheel-picker.git"
+            developerConnection =
+                "scm:git:ssh://github.com/software-mansion-labs/kmp-wheel-picker.git"
+            url = "https://github.com/software-mansion-labs/kmp-wheel-picker"
         }
         developers {
             developer {
