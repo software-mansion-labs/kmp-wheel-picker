@@ -58,7 +58,7 @@ android {
         lint.targetSdk = libs.versions.android.targetSdk.get().toInt()
     }
     packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
-    buildTypes { getByName("release") { isMinifyEnabled = true } }
+    buildTypes { getByName("release") { isMinifyEnabled = false } }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
