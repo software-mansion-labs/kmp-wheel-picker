@@ -16,11 +16,12 @@ KMP Wheel Picker provides a modular wheel picker for Compose&nbsp;Multiplatform.
 
 ## Getting started
 
-KMP Wheel Picker is on Maven Central. It supports iOS, Android, and&nbsp;desktop.
+KMP Wheel Picker is on Maven Central. It supports Android, iOS, desktop, and web
+(via&nbsp;Kotlin/Wasm).
 
 ```toml
 [versions]
-kmpWheelPicker = "0.1.0"
+kmpWheelPicker = "0.2.0"
 
 [libraries]
 swmansion-kmpWheelPicker = { module = "com.swmansion.kmpwheelpicker:kmp-wheel-picker", version.ref = "kmpWheelPicker" }
@@ -156,7 +157,7 @@ WheelPicker(
 ```
 
 [`WheelPickerState.index`](https://software-mansion-labs.github.io/kmp-wheel-picker/kmp-wheel-picker/com.swmansion.kmpwheelpicker/-wheel-picker-state/--index--.html)
-stores the currently selected item’s&nbsp;index:
+stores the index of the currently selected&nbsp;item:
 
 ```kt
 LaunchedEffect(state.index) { println("Item ${state.index + 1} selected.") }
