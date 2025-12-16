@@ -167,8 +167,7 @@ Through
 [`WheelPickerState`](https://software-mansion-labs.github.io/kmp-wheel-picker/kmp-wheel-picker/com.swmansion.kmpwheelpicker/-wheel-picker-state/index.html),
 you can also access the wheel picker’s
 [`InteractionSource`](https://developer.android.com/reference/kotlin/androidx/compose/foundation/interaction/InteractionSource.html)
-instance and maximum item height, as well as scroll programmatically, with or without
-an&nbsp;animation.
+instance and slot height, as well as scroll programmatically, with or without an&nbsp;animation.
 
 ## By [Software Mansion](https://swmansion.com) and [Patryk Goworowski](https://github.com/Gowsky)
 

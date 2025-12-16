@@ -60,8 +60,8 @@ public fun WheelPicker(
                 )
                 .pointerInput(state) {
                     detectTapGestures { offset ->
-                        val topValue = state.value - (size.height / state.maxItemHeight) / 2
-                        val offsetDelta = offset.y / state.maxItemHeight
+                        val topValue = state.value - (size.height / state.slotHeight) / 2
+                        val offsetDelta = offset.y / state.slotHeight
                         coroutineScope.launch {
                             state.animateScrollTo(
                                 (topValue + offsetDelta).toInt(),

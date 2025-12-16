@@ -46,8 +46,10 @@ public class WheelPickerState internal constructor(initialIndex: Int = 0) {
 
     internal var itemCount by mutableIntStateOf(0)
 
-    /** The tallest item’s height. */
-    public var maxItemHeight: Int by mutableIntStateOf(0)
+    /**
+     * The slot height: the height of the tallest item or that of the window, whichever is greater.
+     */
+    public var slotHeight: Int by mutableIntStateOf(0)
         internal set
 
     internal val draggableState = DraggableState(::onScrollDelta)
@@ -58,11 +60,19 @@ public class WheelPickerState internal constructor(initialIndex: Int = 0) {
     public val interactionSource: InteractionSource
         get() = internalInteractionSource
 
+    private var widestItemIndex = -1
+
+    private var maxItemWidth = 0
+
+    private var tallestItemIndex = -1
+
+    private var maxItemHeight = 0
+
     private fun onScrollDelta(delta: Float) {
         currentScrollPriority = null
         scrollJob?.cancel()
         scrollJob = null
-        value -= delta / maxItemHeight
+        value -= delta / slotHeight
     }
 
     private val Int.coercedInIndexRange
@@ -107,14 +117,14 @@ public class WheelPickerState internal constructor(initialIndex: Int = 0) {
         val targetValue =
             round(
                 FloatExponentialDecaySpec(friction)
-                    .getTargetValue(value, -velocity / maxItemHeight)
+                    .getTargetValue(value, -velocity / slotHeight)
                     .coercedInValueRange
             )
         index = targetValue.toInt()
         animate(
             initialValue = value,
             targetValue = targetValue,
-            initialVelocity = -velocity / maxItemHeight,
+            initialVelocity = -velocity / slotHeight,
             animationSpec = animationSpec,
         ) { value, _ ->
             this.value = value
@@ -156,6 +166,47 @@ public class WheelPickerState internal constructor(initialIndex: Int = 0) {
         ) { value, _ ->
             this.value = value
         }
+    }
+
+    private fun updateMaxItemDimension(
+        dimensions: List<Pair<Int, Int>>,
+        currentLargestIndex: Int,
+        currentMaxDimension: Int,
+    ): Pair<Int, Int> {
+        var largestIndex = currentLargestIndex.takeIf { it in 0..<itemCount }
+        var invalidate = largestIndex == null
+        var maxDimension = if (invalidate) 0 else currentMaxDimension
+        for ((index, dimension) in dimensions) {
+            if (dimension > maxDimension) {
+                largestIndex = index
+                maxDimension = dimension
+                continue
+            }
+            if (index == largestIndex && dimension < maxDimension) {
+                invalidate = true
+            }
+        }
+        if (invalidate) {
+            val (index, dimension) = dimensions.maxBy(Pair<Int, Int>::second)
+            largestIndex = index
+            maxDimension = dimension
+        }
+        return (largestIndex ?: -1) to maxDimension
+    }
+
+    internal fun updateMaxItemWidth(widths: List<Pair<Int, Int>>): Int {
+        val (widestIndex, maxWidth) = updateMaxItemDimension(widths, widestItemIndex, maxItemWidth)
+        widestItemIndex = widestIndex
+        maxItemWidth = maxWidth
+        return maxWidth
+    }
+
+    internal fun updateMaxItemHeight(heights: List<Pair<Int, Int>>): Int {
+        val (tallestIndex, maxHeight) =
+            updateMaxItemDimension(heights, tallestItemIndex, maxItemHeight)
+        tallestItemIndex = tallestIndex
+        maxItemHeight = maxHeight
+        return maxHeight
     }
 }
 
