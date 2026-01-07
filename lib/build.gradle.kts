@@ -86,7 +86,7 @@ dokka {
 
 mavenPublishing {
     coordinates(artifactId = "kmp-wheel-picker")
-    publishToMavenCentral()
+    publishToMavenCentral(automaticRelease = true)
     signAllPublications()
     pom {
         name = "KMP Wheel Picker"
